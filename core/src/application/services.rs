@@ -9,12 +9,22 @@ use crate::{
         error::FleetError,
         ports::{cluster::ClusterService, iaas::IaasPort},
     },
-    infrastructure::repositories::IaasRepository,
+    infrastructure::{build_repos_from_conf, repositories::IaasRepository},
 };
 
 #[derive(Clone)]
 pub struct FerrisFleetService {
     iaas_repository: IaasRepository,
+}
+
+impl FerrisFleetService {
+    pub async fn new() -> Result<Self, FleetError> {
+        let repos = build_repos_from_conf().await?;
+
+        Ok(Self {
+            iaas_repository: repos.iaas_repo,
+        })
+    }
 }
 
 impl ClusterService for FerrisFleetService {

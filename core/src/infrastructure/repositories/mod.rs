@@ -32,4 +32,10 @@ impl IaasPort for IaasRepository {
             IaasRepository::Orbstack(adapter) => adapter.list_vms().await,
         }
     }
+
+    async fn get_vm_ip(&self, name: &str) -> Result<String, FleetError> {
+        match self {
+            IaasRepository::Orbstack(adapter) => adapter.get_vm_ip(name).await,
+        }
+    }
 }
